@@ -2,29 +2,29 @@ let taches = document.getElementById("tchc");
 
 let tasks = [
     {
-        "title" : "Bloge Page",
-        "date" : "10-12-2024",
-        "isDone": true
-    },
-    {
         "title" : "Mamiya",
         "date" : "10-10-2024",
         "isDone": false
     },
-    {
-        "title" : "Black Bad",
-        "date" : "01-09-2024",
-        "isDone": false
-    }
 
 ];
+ 
+function gtstrg(){
+    JSON.parse( localStorage.getItem("mama")) != null ?
+        tasks = JSON.parse( localStorage.getItem("mama")) :
+        tasks=[];
+        data();
+   
 
+}
+
+gtstrg();
 function data(){
  taches.innerHTML = ''
  let index=0;
  for(task of tasks){
 let content = `
- <div class="tch ${task.isDone ? 'done' : '' }">
+ <div class="tch ${task.isDone ? '' : 'done' }">
                 <div style="color: black;">
                         <h2>${task.title}</h2>
                         <i class="fa-solid fa-calendar-days"></i>
@@ -59,13 +59,18 @@ index++;
 }   
 }
 
-
 let ajout = document.getElementById('Ajout')
 ajout.addEventListener("click",()=>{
   let now = new Date()
    let dat = now.getDate() + "-" + (now.getMonth()+1) + "-" + now.getFullYear()+"/"+now.getHours()+":"+now.getMinutes()
   let taskname =  prompt(" Enter Title the Task :")
-  
+  if(valid(taskname)){
+     console.log(taskname)
+  }else{
+    alert("invalid title !")
+    taskname =  prompt(" Enter Title the Task :")
+
+  }
    
 //    let dat =
    let objt = {
@@ -73,7 +78,9 @@ ajout.addEventListener("click",()=>{
     "date" : dat,
     "isDone": false
 }
-   tasks.push(objt)
+   tasks.push(objt);
+   storg()
+//    localStorage.setItem('mama',JSON.stringify(tasks));
    data();
 })
 
@@ -82,6 +89,7 @@ function delet(index){
     let iscon = confirm("are you sure to delet task  : " + task.title)
     if(iscon == true){
         tasks.splice(index,1)
+        storg();
     data(); 
     }
    
@@ -92,6 +100,7 @@ function update(index){
     let newnem = prompt("please add new Title :", task.title)
    
    task.title = newnem
+   storg()
      alert(newnem)
    data()
 }
@@ -99,9 +108,15 @@ function update(index){
 function toggleTaskComplition(index){
     let task = tasks[index]
     task.isDone = !task.isDone 
-
-    
     data();
 }
 
 
+function storg(){
+    localStorage.setItem('mama',JSON.stringify(tasks));
+}
+
+function valid(title){
+   let regextitle = /^[A-Za-z ,.'-]{3,50}$/
+   return regextitle.test(title) ;
+}
