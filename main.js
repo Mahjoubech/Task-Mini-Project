@@ -4,7 +4,7 @@ let tasks = [
     {
         "title" : "Bloge Page",
         "date" : "10-12-2024",
-        "isDone": false
+        "isDone": true
     },
     {
         "title" : "Mamiya",
@@ -24,7 +24,7 @@ function data(){
  let index=0;
  for(task of tasks){
 let content = `
- <div class="tch" style="display: grid; grid-template-columns: 60% 40%; background: wheat; padding: 0 8px; ">
+ <div class="tch ${task.isDone ? 'done' : '' }">
                 <div style="color: black;">
                         <h2>${task.title}</h2>
                         <i class="fa-solid fa-calendar-days"></i>
@@ -35,9 +35,17 @@ let content = `
                     <button class="circl" onclick="delet(${index})" style="background: rgb(114, 0, 0);">
                         <i class="fa-solid fa-trash"></i>
                     </button>
-                    <button class="circl" style="background: rgb(0, 50, 30);">
+
+                    ${task.isDone ? `
+                        <button onclick="toggleTaskComplition(${index})" class="circl" style="background: rgb(0, 50, 30);">
                         <i class="fa-solid fa-check"></i>
                     </button>
+                        ` : `
+                        <button onclick="toggleTaskComplition(${index})" class="circl" style="background: rgb(180, 15, 90);">
+                      <i class="fa-solid fa-ban"></i>
+                    </button>
+                        ` }
+
                     <button onclick="update(${index})" class="circl" style="background: rgba(0, 16, 197,0.692);">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
@@ -88,6 +96,12 @@ function update(index){
    data()
 }
 
+function toggleTaskComplition(index){
+    let task = tasks[index]
+    task.isDone = !task.isDone 
 
+    
+    data();
+}
 
 
